@@ -22,6 +22,8 @@ concurrency:
 
 jobs:
   deploy:
+    # 웹 빌드 릴리스(build-*)만 배포한다. 같은 저장소에 Windows 판(windows-*) 릴리스도 올리므로, 그것이 올라와도 사이트를 덮지 않게 한다.
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'build-')
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -33,11 +35,11 @@ jobs:
           TAG: ${{ github.event.release.tag_name || inputs.tag }}
         run: |
           mkdir site
-          if [ -n "$TAG" ]; then
-            gh release download "$TAG" -R "$GITHUB_REPOSITORY" -D site
-          else
-            gh release download -R "$GITHUB_REPOSITORY" -D site
+          if [ -z "$TAG" ]; then
+            # 태그를 안 주면 가장 최근 웹 빌드 릴리스 (Windows 판 릴리스는 고르지 않는다)
+            TAG=$(gh release list -R "$GITHUB_REPOSITORY" --limit 50 --json tagName,createdAt --jq '[.[] | select(.tagName | startswith("build-"))] | sort_by(.createdAt) | last | .tagName')
           fi
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" -D site
           ls -la site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

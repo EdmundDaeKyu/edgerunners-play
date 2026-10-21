@@ -20,3 +20,16 @@ gh release create build-YYYYMMDD web/index.* web/*.png -R EdmundDaeKyu/edgerunne
 ```
 
 예전 릴리스로 되돌리려면 Actions의 "배포"를 손으로 돌리며 태그를 넣는다.
+
+## Windows 판
+
+웹 판은 브라우저 구동 한계로 처음 접속할 때 로딩이 1분 넘게 걸린다(셰이더를 처음 그릴 때 컴파일한다).
+그래서 내려받아 실행하는 Windows 판을 같은 저장소의 `windows-YYYYMMDD` 릴리스로 올린다.
+배포 작업은 `build-*` 릴리스만 배포하므로 Windows 판 릴리스는 사이트에 영향을 주지 않는다.
+
+```bash
+# 게임 저장소에서 내보내기(build/Edgerunners-windows.zip)
+bash tools/export_windows.sh
+
+gh release create windows-YYYYMMDD build/Edgerunners-windows.zip -R EdmundDaeKyu/edgerunners-play --latest=false --title "Windows 판 YYYY-MM-DD" --notes "…"
+```
