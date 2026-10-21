@@ -16,7 +16,7 @@
 bash tools/export_web.sh
 
 # 릴리스로 올리면 배포가 저절로 돈다
-gh release create build-YYYYMMDD web/index.* web/*.png -R EdmundDaeKyu/edgerunners-play --title "빌드 YYYY-MM-DD" --notes "…"
+gh release create build-YYYYMMDD web/index.* -R EdmundDaeKyu/edgerunners-play --title "빌드 YYYY-MM-DD" --notes "…"
 ```
 
 예전 릴리스로 되돌리려면 Actions의 "배포"를 손으로 돌리며 태그를 넣는다.
