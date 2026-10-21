@@ -1,0 +1,47 @@
+# 릴리스에 올린 웹 빌드 파일을 GitHub Pages로 배포한다.
+# 게임 데이터(index.pck)가 100MB를 넘어 저장소에 커밋할 수 없어서, 빌드는 릴리스 첨부 파일로 올리고 여기서 받아 배포한다.
+name: 배포
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "배포할 릴리스 태그 (비우면 최신 릴리스)"
+        required: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 릴리스 파일 받기
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          mkdir site
+          if [ -n "$TAG" ]; then
+            gh release download "$TAG" -R "$GITHUB_REPOSITORY" -D site
+          else
+            gh release download -R "$GITHUB_REPOSITORY" -D site
+          fi
+          ls -la site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4
