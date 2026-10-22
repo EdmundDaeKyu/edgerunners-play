@@ -21,6 +21,9 @@ gh release create build-YYYYMMDD web/index.* -R EdmundDaeKyu/edgerunners-play --
 
 예전 릴리스로 되돌리려면 Actions의 "배포"를 손으로 돌리며 태그를 넣는다.
 
+**릴리스는 늘 이 저장소의 새 커밋 위에 만든다.** 태그가 앞 릴리스와 같은 커밋을 가리키면 배포 작업은 성공으로 끝나도 Pages가 예전 파일을 계속 내보낸다(2026-10-22 build-20261022-3에서 겪음).
+그래서 웹 빌드를 올리기 전에 아래 "빌드 기록"에 한 줄을 넣어 커밋한다.
+
 ## Windows 판
 
 웹 판은 브라우저 구동 한계로 처음 접속할 때 로딩이 1분 넘게 걸린다(셰이더를 처음 그릴 때 컴파일한다).
@@ -33,3 +36,7 @@ bash tools/export_windows.sh
 
 gh release create windows-YYYYMMDD build/Edgerunners-windows.zip -R EdmundDaeKyu/edgerunners-play --latest=false --title "Windows 판 YYYY-MM-DD" --notes "…"
 ```
+
+## 빌드 기록
+
+- build-20261022-4: 정예 저격수 레이저 조준선
