@@ -37,6 +37,23 @@ bash tools/export_windows.sh
 gh release create windows-YYYYMMDD build/Edgerunners-windows.zip -R EdmundDaeKyu/edgerunners-play --latest=false --title "Windows 판 YYYY-MM-DD" --notes "…"
 ```
 
+## macOS 판
+
+Intel과 Apple Silicon에서 모두 도는 범용 앱을 `macos-YYYYMMDD` 릴리스로 올린다.
+배포 작업은 `build-*` 릴리스만 배포하므로 macOS 판 릴리스도 사이트에 영향을 주지 않는다.
+
+- Apple 공증(notarization)을 받지 않았다(ad-hoc 서명만).
+  받은 사람이 처음 열면 macOS가 막는다 → 시스템 설정 > 개인정보 보호 및 보안 > "그래도 열기".
+- Godot이 만든 zip을 **그대로** 올린다. zip 안 실행 파일에 실행 권한(755)이 들어 있어서, 풀었다 다시 묶으면 맥에서 앱이 안 열린다.
+
+```bash
+# 게임 저장소에서 내보내기(build/macos/Edgerunners-macos.zip)
+bash tools/export_macos.sh
+
+gh release create macos-YYYYMMDD build/macos/Edgerunners-macos.zip -R EdmundDaeKyu/edgerunners-play --latest=false --title "macOS 판 YYYY-MM-DD" --notes "…"
+```
+
 ## 빌드 기록
 
+- build-20261103: 휠 무기 교체 · 체인소드 보스 갈기 · 처형 안내 · 보스전 렉(분신 재사용 · 웹 2페이즈 데우기) · macOS 판 같이 올림
 - build-20261022-4: 정예 저격수 레이저 조준선
